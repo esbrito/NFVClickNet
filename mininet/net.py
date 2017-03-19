@@ -980,6 +980,21 @@ class Containernet( Mininet ):
         # call original Mininet.__init__
         Mininet.__init__(self, **params)
 
+
+    def addPop( self, name, cls=Docker, **params ):
+        """
+        Wrapper for addHost method that adds a
+        Docker container as a host.
+        """
+        return self.addHost( name, cls=cls, **params)
+
+    def removePop( self, name, **params):
+        """
+        Wrapper for removeHost. Just to be complete.
+        """
+        return self.removeHost(name, **params)
+
+
     def addDocker( self, name, cls=Docker, **params ):
         """
         Wrapper for addHost method that adds a
@@ -992,6 +1007,17 @@ class Containernet( Mininet ):
         Wrapper for removeHost. Just to be complete.
         """
         return self.removeHost(name, **params)
+
+    def deployFunction( self, name):
+        """
+        Deploy into container the function
+        """
+        
+
+    def runFunction( self, name):
+        """
+        Runs function using Click Software
+        """
 
 
 class MininetWithControlNet( Mininet ):

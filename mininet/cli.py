@@ -146,6 +146,39 @@ class CLI( Cmd ):
         if line is '':
             output( self.helpStr )
 
+    def do_deploy( self, line ):
+        """Deploy Virtual Network Function in the selected Node.
+         Usage: deploy node function
+         Available Functions: 'forwarder', 'firewall' and 'traffic shapper'"""
+        args = line.split()
+        if not args:
+            error( 'usage: deploy node function ...\n')
+        elif len(args) != 2:
+            error( 'Wrong number of arguments. Usage: deploy node function ...\n')
+        else:
+            if args[0] not in self.mn:
+                error( "node '%s' not in network\n" % args[0] )
+            else:
+                container = self.mn[ args[0] ]
+                container.deployFunction( args[1])
+
+    def do_runvnf( self, line ):
+        """Runs Virtual Network Function in the selected Node.
+         Usage: runvnf node function
+         Available Functions: 'forwarder', 'firewall' and 'traffic shapper'"""
+        args = line.split()
+        if not args:
+            error( 'usage: runvnf node function ...\n')
+        elif len(args) != 2:
+            error( 'Wrong number of arguments. Usage: runvnf node function ...\n')
+        else:
+            if args[0] not in self.mn:
+                error( "node '%s' not in network\n" % args[0] )
+            else:
+                container = self.mn[ args[0] ]
+                container.runFunction( args[1])
+
+
     def do_nodes( self, _line ):
         "List all nodes."
         nodes = ' '.join( sorted( self.mn ) )

@@ -642,6 +642,7 @@ class Host( Node ):
     pass
 
 
+
 class Docker ( Host ):
     """Node that represents a docker container.
     This part is inspired by:
@@ -1048,6 +1049,12 @@ class Docker ( Host ):
         except:
             error("Problem reading cgroup info: %r\n" % cmd)
             return -1
+
+
+
+class Pop( Node ):
+    "A pop is simply a Docker"
+    pass
 
 
 class CPULimitedHost( Host ):
