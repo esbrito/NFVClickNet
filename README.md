@@ -7,7 +7,7 @@ Containernet
 
 This fork of Mininet allows to use Docker containers as Mininet hosts. This enables interesting functionalities to built networking/cloud testbeds. The integration is done by subclassing the original Host class.
 
-Based on: Mininet 2.2.1
+Based on: Mininet 2.3.0d1
 
 * Mininet:  http://mininet.org
 * Original Mininet repository: https://github.com/mininet/mininet
@@ -30,7 +30,7 @@ There is an extension of Containernet called MeDICINE which is a full-featured m
 
 * Add, remove Docker containers to Mininet topologies
 * Connect Docker containers to topology (to switches, other containers, or legacy Mininet hosts )
-* Execute commands inside Docker containers by using the Mininet CLI 
+* Execute commands inside Docker containers by using the Mininet CLI
 * Dynamic topology changes (lets behave like a small cloud ;-) )
  * Add Hosts/Docker containers to a *running* Mininet topology
  * Connect Hosts/Docker containers to a *running* Mininet topology
@@ -84,4 +84,3 @@ vagrant ssh
 ### Contact
 Manuel Peuster
 manuel (dot) peuster (at) upb (dot) de
-
