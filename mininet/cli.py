@@ -160,7 +160,10 @@ class CLI( Cmd ):
                 error( "node '%s' not in network\n" % args[0] )
             else:
                 container = self.mn[ args[0] ]
-                container.deployFunction( args[1])
+                if(container.deployFunction( args[1])):
+                    print "Function deployed with success!"
+                else:
+                    print "Fail to deploy function!"
 
     def do_runvnf( self, line ):
         """Runs Virtual Network Function in the selected Node.
