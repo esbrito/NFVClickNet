@@ -160,7 +160,7 @@ class CLI( Cmd ):
                 error( "node '%s' not in network\n" % args[0] )
             else:
                 container = self.mn[ args[0] ]
-                if(container.deployFunction( args[1])):
+                if(container.deployFunction( args[1], container )):
                     print "Function deployed with success!"
                 else:
                     print "Fail to deploy function!"

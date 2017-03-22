@@ -1051,7 +1051,7 @@ class Docker ( Host ):
             return -1
 
 
-    def deployFunction( self, nf_type):
+    def deployFunction( self, nf_type, pop):
         """
         Deploy into container the function
         """
@@ -1067,6 +1067,8 @@ class Docker ( Host ):
             else:
                 return False
             # TODO Send file to Container
+            self.dcli.put_archive(container="mn.%s" % (pop), path="/root/",
+                               data=_file):
             return True
         except IOError:
             error( "Function file '%s' does not exist in nf_files folder\n" % nf_type )
