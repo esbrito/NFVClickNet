@@ -1052,9 +1052,31 @@ class Docker ( Host ):
 
 
 
-class Pop( Node ):
-    "A pop is simply a Docker"
-    pass
+class Pop( Docker ):
+    "A pop is simply a Docker with extended methods"
+    def __init__(self, name, dimage, dcmd=None, **kwargs):
+        Docker.__init__( self, name, dimage, dcmd=None, **kwargs )
+
+    def deployFunction( self, nf_type):
+        """
+        Deploy into container the function
+        """
+        print ("Deploying function '%s'...\n" % nf_type )
+        if nf_type == 'Firewall':
+            _file = open("nf_files/firewall.tar")
+        elif nf_type == 'Load Balancer':
+            _file = open("nf_files/load-balancer.tar")
+        elif nf_type == 'Traffic Shaper':
+            _file = open("nf_files/ts.tar")
+        else:
+            error( "Function '%s' does not exist\n" % nf_type )
+
+
+    def runFunction( self, nf_type):
+        """
+        Runs function using Click Software
+        """
+        print ("Running function '%s'...\n" % nf_type )
 
 
 class CPULimitedHost( Host ):
