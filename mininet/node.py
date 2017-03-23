@@ -1064,14 +1064,14 @@ class Docker ( Host ):
                 _file = open(path + "ts.tar")
             else:
                 return False
-            self.dcli.put_archive(container="mn.%s" % (pop), path="/root/",
-                               data=_file):
-            return True
+            return self.dcli.put_archive(container="mn.%s" % (pop), path="/root/",
+                               data=_file)
+           
         except IOError:
             error( "Function file '%s' does not exist in nf_files folder\n" % nf_type )
             return False
 
-    def runFunction( self, nf_type):
+    def runFunction( self, nf_type, pop):
         """
         Runs function using Click Software
         """
