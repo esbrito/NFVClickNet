@@ -1058,34 +1058,43 @@ class Docker ( Host ):
         print ("Deploying function '%s'...\n" % nf_type )
         try:
             path = os.getcwd()+"/mininet/nf_files/"
-            if nf_type == 'Firewall':
+            if nf_type == 'firewall':
                 _file = open(path + "firewall.tar")
-            elif nf_type == 'Load Balancer':
-                _file = open(path + "load-balancer.tar")
-            elif nf_type == 'Traffic Shaper':
+            elif nf_type == 'traffic shaper':
                 _file = open(path + "ts.tar")
             else:
                 return False
-            # TODO Send file to Container
-            if(self.dcli.put_archive(container="mn.%s" % (pop), path="/root/", data=_file)):
-                return True
-            else:
-                return False
+            self.dcli.put_archive(container="mn.%s" % (pop), path="/root/",
+                               data=_file):
+            return True
         except IOError:
             error( "Function file '%s' does not exist in nf_files folder\n" % nf_type )
             return False
 
-    def runFunction( self, nf_type, pop):
+    def runFunction( self, nf_type):
         """
         Runs function using Click Software
         """
-        print ("Running function '%s'...\n" % nf_type )
-        process = self.dcli.exec_create(container="mn.%s" % (pop),
-                                      cmd="sudo ./Click -j4 firewall.click "
-                                          "DEV=%s" % (pop))
-        if self.dcli.exec_start(process, detach=True) == '':
-            return True
-        else:
+        try:
+            print ("Enabling function '%s'...\n" % nf_type )
+            if nf_type == 'firewall':
+                process = self.dcli.exec_create(container="mn.%s" % (pop),
+                                          cmd="sudo ./Click -j4 firewall.click "
+                                              "DEV=%s" % (pop))
+
+            elif nf_type == 'traffic shaper':
+                process = self.dcli.exec_create(container="mn.%s" % (pop),
+                                          cmd="sudo /root/Click -j4 "
+                                              "ts.click DEV=%s" % (pop))
+            else:
+                print "Function does not exist!"
+                return False
+            if self.dcli.exec_start(process, detach=True) == '':
+                return True
+            else:
+                return False
+        except RuntimeError:
+            error( "Error executing Click\n" )
             return False
 
 

@@ -160,26 +160,29 @@ class CLI( Cmd ):
                 error( "node '%s' not in network\n" % args[0] )
             else:
                 container = self.mn[ args[0] ]
-                if(container.deployFunction( args[1], container )):
+                if(container.deployFunction( args[1].lower(), container )):
                     print "Function deployed with success!"
                 else:
                     print "Fail to deploy function!"
 
-    def do_runvnf( self, line ):
+    def do_enable( self, line ):
         """Runs Virtual Network Function in the selected Node.
-         Usage: runvnf node function
+         Usage: enable node function
          Available Functions: 'forwarder', 'firewall' and 'traffic shapper'"""
         args = line.split()
         if not args:
-            error( 'usage: runvnf node function ...\n')
+            error( 'usage: enable node function ...\n')
         elif len(args) != 2:
-            error( 'Wrong number of arguments. Usage: runvnf node function ...\n')
+            error( 'Wrong number of arguments. Usage: enable node function ...\n')
         else:
             if args[0] not in self.mn:
                 error( "node '%s' not in network\n" % args[0] )
             else:
                 container = self.mn[ args[0] ]
-                container.runFunction( args[1])
+                if(container.runFunction( args[1].lower(), container )):
+                    print "Function enabled with success!"
+                else:
+                    print "Fail to enable function!"
 
 
     def do_nodes( self, _line ):
