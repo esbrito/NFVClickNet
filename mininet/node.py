@@ -1067,19 +1067,26 @@ class Docker ( Host ):
             else:
                 return False
             # TODO Send file to Container
-            self.dcli.put_archive(container="mn.%s" % (pop), path="/root/",
-                               data=_file):
-            return True
+            if(self.dcli.put_archive(container="mn.%s" % (pop), path="/root/", data=_file)):
+                return True
+            else:
+                return False
         except IOError:
             error( "Function file '%s' does not exist in nf_files folder\n" % nf_type )
             return False
 
-    def runFunction( self, nf_type):
+    def runFunction( self, nf_type, pop):
         """
         Runs function using Click Software
         """
         print ("Running function '%s'...\n" % nf_type )
-
+        process = self.dcli.exec_create(container="mn.%s" % (pop),
+                                      cmd="sudo ./Click -j4 firewall.click "
+                                          "DEV=%s" % (pop))
+        if self.dcli.exec_start(process, detach=True) == '':
+            return True
+        else:
+            return False
 
 
 class CPULimitedHost( Host ):
