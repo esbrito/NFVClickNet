@@ -1060,13 +1060,13 @@ class Docker ( Host ):
             path = os.getcwd()+"/mininet/nf_files/"
             if nf_type == 'firewall':
                 _file = open(path + "firewall.tar")
-            elif nf_type == 'traffic shaper':
+            elif nf_type == 'shaper':
                 _file = open(path + "ts.tar")
             else:
                 return False
             return self.dcli.put_archive(container="mn.%s" % (pop), path="/root/",
                                data=_file)
-           
+
         except IOError:
             error( "Function file '%s' does not exist in nf_files folder\n" % nf_type )
             return False
@@ -1082,7 +1082,7 @@ class Docker ( Host ):
                                           cmd="sudo ./Click -j4 firewall.click "
                                               "DEV=%s" % (pop))
 
-            elif nf_type == 'traffic shaper':
+            elif nf_type == 'shaper':
                 process = self.dcli.exec_create(container="mn.%s" % (pop),
                                           cmd="sudo /root/Click -j4 "
                                               "ts.click DEV=%s" % (pop))

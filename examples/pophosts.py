@@ -27,7 +27,7 @@ def topology():
     h3 = net.addHost('h3')
 
     info('*** Adding docker containers\n')
-    d1 = net.addPop('d1', ip='10.0.0.251', dimage="gmiotto/click")
+    d1 = net.addPop('d1', ip='10.0.0.251', dimage="ubuntu:trusty")
 
 
     info('*** Adding switch\n')
@@ -38,7 +38,7 @@ def topology():
     info('*** Creating links\n')
     net.addLink(h1, s1)
     net.addLink(s1, s2)
-    net.addLink(s2, d1)
+    net.addPopLink(s2, d1)
     net.addLink(s2, s3)
     net.addLink(s3, h3)
 

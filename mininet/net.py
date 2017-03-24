@@ -994,6 +994,20 @@ class Containernet( Mininet ):
         """
         return self.removeHost(name, **params)
 
+    def addPopLink( self, node1, node2, port1=None, port2=None, cls=None, **params ):
+        """
+        Makes two interfaces connecting to switch
+        """
+        self.addLink( node1, node2, port1=None, port2=None, cls=None, **params )
+        return self.addLink( node1, node2, port1=None, port2=None, cls=None, **params )
+
+    def removePopLink( self, link=None, node1=None, node2=None):
+        """
+        Deletes two interfaces connecting to switch
+        """
+        self.removeLink( link=None, node1=None, node2=None )
+        return self.removeLink( link=None, node1=None, node2=None )
+
 
     def addDocker( self, name, cls=Docker, **params ):
         """
