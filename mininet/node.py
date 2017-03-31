@@ -1055,46 +1055,51 @@ class Docker ( Host ):
         """
         Deploy into container the function
         """
-        print ("Deploying function '%s'...\n" % nf_type )
+        print ("Deploying function '%s'..." % nf_type )
         try:
             path = os.getcwd()+"/mininet/nf_files/"
-            if nf_type == 'firewall':
-                _file = open(path + "firewall.tar")
-            elif nf_type == 'shaper':
-                _file = open(path + "ts.tar")
-            else:
-                return False
+            _file = open(path + nf_type + ".tar")
             return self.dcli.put_archive(container="mn.%s" % (pop), path="/root/",
                                data=_file)
 
         except IOError:
-            error( "Function file '%s' does not exist in nf_files folder\n" % nf_type )
+            error( "Function file '%s' does not exist in nf_files folder" % nf_type )
             return False
 
-    def runFunction( self, nf_type, pop):
+    def enableFunction( self, nf_type, pop):
         """
-        Runs function using Click Software
+        Enable function using Click Software
         """
         try:
-            print ("Enabling function '%s'...\n" % nf_type )
-            if nf_type == 'firewall':
-                process = self.dcli.exec_create(container="mn.%s" % (pop),
-                                          cmd="sudo ./Click -j4 firewall.click "
-                                              "DEV=%s" % (pop))
-
-            elif nf_type == 'shaper':
-                process = self.dcli.exec_create(container="mn.%s" % (pop),
-                                          cmd="sudo /root/Click -j4 "
-                                              "ts.click DEV=%s" % (pop))
-            else:
-                print "Function does not exist!"
-                return False
+            print ("Enabling function '%s'..." % nf_type )
+            process = self.dcli.exec_create(container="mn.%s" % (pop),
+                                      cmd="sudo ./Click -j4 " + nf_type + ".click "
+                                          "DEV=%s" % (pop))
             if self.dcli.exec_start(process, detach=True) == '':
                 return True
             else:
+                error( "Error! Function not deployed yet!" )
                 return False
         except RuntimeError:
-            error( "Error executing Click\n" )
+            error( "Error executing Click" )
+            return False
+
+    def disableFunction( self, nf_type, pop):
+        """
+        Disable function using Click Software
+        """
+        try:
+            print ("Disabling function '%s'..." % nf_type )
+            process = self.dcli.exec_create(container="mn.%s" % (pop),
+                                      cmd="ps -eaf | grep " + nf_type + " | "
+                                      "grep -v grep | awk '{print $2}' | xargs kill -9")
+            if self.dcli.exec_start(process, detach=True) == '':
+                return True
+            else:
+                error( "Error! Function not deployed yet!" )
+                return False
+        except RuntimeError:
+            error( "Error executing Click" )
             return False
 
 

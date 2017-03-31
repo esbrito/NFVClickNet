@@ -43,7 +43,7 @@ from mininet.util import ( quietRun, dumpNodeConnections,
 class CLI( Cmd ):
     "Simple command-line interface to talk to nodes."
 
-    prompt = 'containernet> '
+    prompt = 'NFVClickNet> '
 
     def __init__( self, mininet, stdin=sys.stdin, script=None ):
         """Start and run interactive or batch mode CLI
@@ -179,10 +179,30 @@ class CLI( Cmd ):
                 error( "node '%s' not in network\n" % args[0] )
             else:
                 container = self.mn[ args[0] ]
-                if(container.runFunction( args[1].lower(), container )):
+                if(container.enableFunction( args[1].lower(), container )):
                     print "Function enabled with success!"
                 else:
                     print "Fail to enable function!"
+
+
+    def do_disable( self, line ):
+        """Runs Virtual Network Function in the selected Node.
+         Usage: disable node function
+         Available Functions: 'forwarder', 'firewall' and 'traffic shapper'"""
+        args = line.split()
+        if not args:
+            error( 'usage: disable node function ...\n')
+        elif len(args) != 2:
+            error( 'Wrong number of arguments. Usage: disable node function ...\n')
+        else:
+            if args[0] not in self.mn:
+                error( "node '%s' not in network\n" % args[0] )
+            else:
+                container = self.mn[ args[0] ]
+                if(container.disableFunction( args[1].lower(), container )):
+                    print "Function disable with success!"
+                else:
+                    print "Fail to disable function!"
 
 
     def do_nodes( self, _line ):
