@@ -1063,7 +1063,7 @@ class Docker ( Host ):
                                data=_file)
 
         except IOError:
-            error( "Function file '%s' does not exist in nf_files folder" % nf_type )
+            error( "Function file '%s' does not exist in nf_files folder\n" % nf_type )
             return False
 
     def enableFunction( self, nf_type, pop):
