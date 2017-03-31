@@ -1078,10 +1078,10 @@ class Docker ( Host ):
             if self.dcli.exec_start(process, detach=True) == '':
                 return True
             else:
-                error( "Error! Function not deployed yet!" )
+                error( "Error! Function not deployed yet!\n" )
                 return False
         except RuntimeError:
-            error( "Error executing Click" )
+            error( "Error executing Click\n" )
             return False
 
     def disableFunction( self, nf_type, pop):
@@ -1091,15 +1091,14 @@ class Docker ( Host ):
         try:
             print ("Disabling function '%s'..." % nf_type )
             process = self.dcli.exec_create(container="mn.%s" % (pop),
-                                      cmd="ps -eaf | grep " + nf_type + " | "
-                                      "grep -v grep | awk '{print $2}' | xargs kill -9")
+                                      cmd="ps -eaf | grep " + nf_type + " | grep -v grep | awk '{print $2}' | sudo xargs kill -9")
             if self.dcli.exec_start(process, detach=True) == '':
                 return True
             else:
-                error( "Error! Function not deployed yet!" )
+                error( "Error! Function not deployed yet!\n" )
                 return False
         except RuntimeError:
-            error( "Error executing Click" )
+            error( "Error executing Click\n" )
             return False
 
 

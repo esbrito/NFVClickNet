@@ -180,7 +180,7 @@ class CLI( Cmd ):
             else:
                 container = self.mn[ args[0] ]
                 if(container.enableFunction( args[1].lower(), container )):
-                    print "Function enabled with success!"
+                    print ""
                 else:
                     print "Fail to enable function!"
 
@@ -200,7 +200,7 @@ class CLI( Cmd ):
             else:
                 container = self.mn[ args[0] ]
                 if(container.disableFunction( args[1].lower(), container )):
-                    print "Function disable with success!"
+                    print ""
                 else:
                     print "Fail to disable function!"
 

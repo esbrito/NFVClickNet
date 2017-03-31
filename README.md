@@ -51,6 +51,11 @@ Start example topology
 * use: `NFVClickNet> enable d1 firewall` to enable the firewall
 * use: `NFVClickNet> disable d1 firewall` to disable the firewall
 
+### Cleaning Containers and Mininet
+You can run the following command to clean the processes running:
+* run: `./util/clean.sh `
+
+
 ### How to create/use a new Virtual Network Function
 To create a new VNF, you need to create a `.click` file, which you specify there the processing and analysis you want to do in the packets.
 
