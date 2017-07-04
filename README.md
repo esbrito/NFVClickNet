@@ -13,7 +13,9 @@ NFVClickNet
     * Pre-print online: http://arxiv.org/abs/1606.05995
 * Click Router: https://github.com/kohler/click
 
+### Requirements
 
+```apt-get install libxml2-dev libxslt1-dev ```
 
 ### What new Features it offers?
 

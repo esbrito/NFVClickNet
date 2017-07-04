@@ -106,6 +106,7 @@ from mininet.util import ( quietRun, fixLimits, numCores, ensureRoot,
                            macColonHex, ipStr, ipParse, netParse, ipAdd,
                            waitListening )
 from mininet.term import cleanUpScreens, makeTerms
+from main import load_sfcs
 
 # Mininet version: should be consistent with README and LICENSE
 VERSION = "2.3.0d1"
@@ -1023,8 +1024,9 @@ class Containernet( Mininet ):
         return self.removeHost(name, **params)
 
     def sfc( self, name ):
-        output ( "Teste SFC" + name )
+        load_sfcs()
 
+        
 
 class MininetWithControlNet( Mininet ):
 
