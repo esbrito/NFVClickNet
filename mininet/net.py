@@ -1022,7 +1022,8 @@ class Containernet( Mininet ):
         """
         return self.removeHost(name, **params)
 
-
+    def Sfc( self, name ):
+        output ( "Teste SFC" + name )
 
 
 class MininetWithControlNet( Mininet ):

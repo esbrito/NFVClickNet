@@ -125,19 +125,19 @@ class CLI( Cmd ):
         'You may also send a command to a node using:\n'
         '  <node> command {args}\n'
         'For example:\n'
-        '  mininet> h1 ifconfig\n'
+        '  NFVClickNet> h1 ifconfig\n'
         '\n'
         'The interpreter automatically substitutes IP addresses\n'
         'for node names when a node is the first arg, so commands\n'
         'like\n'
-        '  mininet> h2 ping h3\n'
+        '  NFVClickNet> h2 ping h3\n'
         'should work.\n'
         '\n'
         'Some character-oriented interactive commands require\n'
         'noecho:\n'
-        '  mininet> noecho h2 vi foo.py\n'
+        '  NFVClickNet> noecho h2 vi foo.py\n'
         'However, starting up an xterm/gterm is generally better:\n'
-        '  mininet> xterm h2\n\n'
+        '  NFVClickNet> xterm h2\n\n'
     )
 
     def do_help( self, line ):
@@ -160,10 +160,10 @@ class CLI( Cmd ):
                 error( "node '%s' not in network\n" % args[0] )
             else:
                 container = self.mn[ args[0] ]
-                if(container.deployFunction( args[1].lower(), container )):
-                    print "Function deployed with success!"
+                if container.deployFunction( args[1].lower(), container ):
+                    output( "Function deployed with success!" )
                 else:
-                    print "Fail to deploy function!"
+                    error( "Fail to deploy function!" )
 
     def do_enable( self, line ):
         """Runs Virtual Network Function in the selected Node.
@@ -179,10 +179,10 @@ class CLI( Cmd ):
                 error( "node '%s' not in network\n" % args[0] )
             else:
                 container = self.mn[ args[0] ]
-                if(container.enableFunction( args[1].lower(), container )):
-                    print "Enabled"
+                if container.enableFunction( args[1].lower(), container ):
+                    output( "Enabled" )
                 else:
-                    print "Fail to enable function!"
+                    error( "Fail to enable function!")
 
 
     def do_disable( self, line ):
@@ -199,10 +199,22 @@ class CLI( Cmd ):
                 error( "node '%s' not in network\n" % args[0] )
             else:
                 container = self.mn[ args[0] ]
-                if(container.disableFunction( args[1].lower(), container )):
-                    print "Disabled"
+                if container.disableFunction( args[1].lower(), container ):
+                    output( "Disabled" )
                 else:
-                    print "Fail to disable function!"
+                    error( "Fail to disable function!" )
+
+    def do_sfc( self, line ):
+    """Creates rules and deploy VNFs based on SFC description.
+        Usage: sfc name
+        """
+    args = line.split()
+    if not args:
+        error( 'usage: disable node function ...\n')
+    elif len(args) != 1:
+        error( 'Wrong number of arguments. Usage: sfc name ...\n')
+    else:
+        self.mn
 
 
     def do_nodes( self, _line ):
