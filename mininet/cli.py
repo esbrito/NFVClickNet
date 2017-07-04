@@ -205,16 +205,15 @@ class CLI( Cmd ):
                     error( "Fail to disable function!" )
 
     def do_sfc( self, line ):
-    """Creates rules and deploy VNFs based on SFC description.
-        Usage: sfc name
-        """
-    args = line.split()
-    if not args:
-        error( 'usage: disable node function ...\n')
-    elif len(args) != 1:
-        error( 'Wrong number of arguments. Usage: sfc name ...\n')
-    else:
-        self.mn
+        """Creates rules and deploy VNFs based on SFC description.
+        Usage: sfc name"""
+        args = line.split()
+        if not args:
+            error( 'usage: disable node function ...\n')
+        elif len(args) != 1:
+            error( 'Wrong number of arguments. Usage: sfc name ...\n')
+        else:
+            self.mn.sfc(args[0])
 
 
     def do_nodes( self, _line ):
