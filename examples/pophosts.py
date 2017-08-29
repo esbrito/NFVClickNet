@@ -11,6 +11,7 @@ from mininet.node import Controller, Docker, OVSSwitch
 from mininet.cli import CLI
 from mininet.log import setLogLevel, info
 from mininet.link import TCLink, Link
+from mininet.util import dumpNodeConnections2
 
 
 def topology():
@@ -44,6 +45,12 @@ def topology():
 
     info('*** Starting network\n')
     net.start()
+
+        # Dumping topology to file
+    topofile = open('topology.txt', mode="w")
+    output = dumpNodeConnections2(net.values())
+    topofile.write(output)
+    topofile.close()
 
     info('*** Running CLI\n')
     CLI(net)

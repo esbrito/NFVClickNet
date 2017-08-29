@@ -14,8 +14,10 @@ NFVClickNet
 * Click Router: https://github.com/kohler/click
 
 ### Requirements
-
 ```apt-get install libxml2-dev libxslt1-dev ```
+```export LC_ALL=C  ```
+```pip  install -r requirements.txt  ```
+
 
 ### What new Features it offers?
 
