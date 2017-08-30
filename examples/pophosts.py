@@ -5,9 +5,9 @@ This example shows how to create a simple network and
 how to create docker containers (based on existing images)
 to it.
 """
-
+import os
 from mininet.net import Containernet
-from mininet.node import Controller, Docker, OVSSwitch
+from mininet.node import RemoteController, Docker, OVSSwitch
 from mininet.cli import CLI
 from mininet.log import setLogLevel, info
 from mininet.link import TCLink, Link
@@ -18,14 +18,15 @@ def topology():
 
     "Create a network with some docker containers acting as pops."
 
-    net = Containernet(controller=Controller)
+    net = Containernet(controller=RemoteController)
 
     info('*** Adding controller\n')
-    net.addController('c0')
+    c0 = RemoteController('c0', ip='127.0.0.1', port=6633)
+    net.addController(c0)
 
     info('*** Adding hosts\n')
-    h1 = net.addHost('h1')
-    h3 = net.addHost('h3')
+    h1 = net.addHost('h1', ip='10.0.0.1')
+    h3 = net.addHost('h3', ip='10.0.0.3')
 
     info('*** Adding docker containers\n')
     d1 = net.addPop('d1', ip='10.0.0.251', dimage="gmiotto/click")
@@ -52,9 +53,11 @@ def topology():
     topofile.write(output)
     topofile.close()
 
+
     info('*** Running CLI\n')
     CLI(net)
 
+    os.system("rm topology.txt")
 if __name__ == '__main__':
     setLogLevel('info')
     topology()

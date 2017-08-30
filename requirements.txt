@@ -1,4 +1,3 @@
-docker-py>=1.7.1
 ryu>=4
 networkx>=1.10
 spyne==2.12.11

@@ -4,16 +4,16 @@ from nfvsdnapi import SFC, Pop, NFunction
 def load_sfcs():
     links = [
         ('h1', 's1', {'src_ip': 'h1', 'dst_ip': 'h3', 'pop': False}),
-        ('s1', 'd1', {'src_ip': 'h1', 'dst_ip': 'h3', 'pop': True}),
-        ('d1', 's2', {'src_ip': 'h1', 'dst_ip': 'h3', 'pop': True}),
-        ('s2', 's3', {'src_ip': 'h1', 'dst_ip': 'h3', 'pop': False}),
+        ('s1', 's2', {'src_ip': 'h1', 'dst_ip': 'h3', 'pop': False}),
+        ('s2', 'd1', {'src_ip': 'h1', 'dst_ip': 'h3', 'pop': True}),
+        ('s2', 's3', {'src_ip': 'h1', 'dst_ip': 'h3', 'pop': True}),
         ('s3', 'h3', {'src_ip': 'h1', 'dst_ip': 'h3', 'pop': False}),
         # Return of packets
         ('h3', 's3', {'src_ip': 'h3', 'dst_ip': 'h1', 'pop': False}),
-        ('s3', 'd1', {'src_ip': 'h3', 'dst_ip': 'h1', 'pop': True}),
-        ('d1', 's2', {'src_ip': 'h3', 'dst_ip': 'h1', 'pop': True}),
-        ('s2', 's1', {'src_ip': 'h3', 'dst_ip': 'h1', 'pop': False}),
-        ('s1', 'h1', {'src_ip': 'h3', 'dst_ip': 'h1', 'pop': False}),
+        ('s3', 's2', {'src_ip': 'h3', 'dst_ip': 'h1', 'pop': False}),
+        ('s2', 'd1', {'src_ip': 'h3', 'dst_ip': 'h1', 'pop': True}),
+        ('s2', 's1', {'src_ip': 'h3', 'dst_ip': 'h1', 'pop': True}),
+        ('s1', 'h1', {'src_ip': 'h3', 'dst_ip': 'h1', 'pop': False})
     ]
 
     pop31 = Pop('d1')

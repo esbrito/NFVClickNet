@@ -83,6 +83,7 @@ class SFC(object):
             return False
 
     def deploy_flow(self):
+        print(self.graph)
         for edges in self.graph:
             if not self.deploy_pair(edges[0], edges[1], edges[2]):
                 return False
@@ -95,16 +96,17 @@ class SFC(object):
         # Uses a dictionary, with information about
         # pops in the switch.
         # Eg: {s2:[(h21,'Firewall'),(h22,'TrafficShaper), ....]}
-
+        print('src: ' + src + ' dst: ' + dst)
         src_ip = info["src_ip"]
         dst_ip = info["dst_ip"]
         if info["pop"]:
             # src has a POP
+            print(dst[:1] )
             if(src[:1] == 's') and (dst[:1] == 'd'):
                 # It is a connection to a PoP so it saves in a dict the
                 # information so it can be used to install later the rules
                 # in the switch
-
+                print('hue')
                 if src in self.pop_dict:
                     list_pop = self.pop_dict[src]
                     list_pop.append((dst, self.__get_function(dst)))
@@ -114,13 +116,14 @@ class SFC(object):
                     nfunction = self.__get_function(dst)
                     list_pop.append((dst, nfunction))
                 self.pop_dict = {src: list_pop}
+                print(self.pop_dict)
                 return True
 
             if(src[:1] == 's') and ((dst[:1] == 's') or (dst[:1] == 'h')):
                 # Source is connected to the pop we saved in the dict
                 # so it needs to pass the list of pops connected to
                 # this switch to install the rules
-
+                print('here')
                 if src in self.pop_dict:
                     # Pop is this string [('h2','Firewall')]
                     # It need to pass in a way that works with curl
@@ -143,10 +146,13 @@ class SFC(object):
                           "-sfc_id=%s-src=%s-dst=%s-dst_ip=%s-pop_type=%s" % \
                           (self.sfc_id, src, dst, dst_ip, popString)
                 else:
+                    print('this')
                     return False
             else:
+                print('that')
                 return False
         else:
+            print('first?')  
             # Test if it is the first connection in the SFC
             first = True if src_ip == src else False
             if(first is True):

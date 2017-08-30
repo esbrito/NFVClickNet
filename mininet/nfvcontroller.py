@@ -19,13 +19,13 @@ class NfvControllerService(ServiceBase):
     @rpc(Unicode, Unicode, _returns=bool)
     def deploy(ctx, pop, nf_type="default"):
         if nf_type == 'Firewall':
-            path = os.getcwd()+"/mininet/nf_files/firewall.tar"
+            path = os.getcwd()+"/nf_files/firewall.tar"
             _file = open(path)
         elif nf_type == 'Load Balancer':
-            path = os.getcwd()+"/mininet/nf_files/balancer.tar"
+            path = os.getcwd()+"/nf_files/balancer.tar"
             _file = open(path)
         elif nf_type == 'Traffic Shaper':
-            path = os.getcwd()+"/mininet/nf_files/ts.tar"
+            path = os.getcwd()+"/nf_files/ts.tar"
             _file = open(path)
         else:
             print "<NFV_SERVICE:deploy:28> invalid nf_type"

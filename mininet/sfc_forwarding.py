@@ -205,6 +205,7 @@ class SFCForwardingAPI(app_manager.RyuApp):
         # Iterates through each pop so it install all rules regarding pops on
         # that switch with multiple pops
         # Test for in case it is not multiple pops
+        print(src)
         if (len(pops) > 1):
             for pop in pops:
                 if pop[1] == "Firewall" or pop[1] == "TrafficShaper":
@@ -379,6 +380,7 @@ class SFCForwardingAPI(app_manager.RyuApp):
         datapath = self.dp_dict[dpid]
         parser = datapath.ofproto_parser
         ip_dst = "10.0.0.%s" % dst_ip
+        print(src)
         actions = []
         if(_src[:1] == 's') and (_dst[:1] == 's'):
             if last_lb:

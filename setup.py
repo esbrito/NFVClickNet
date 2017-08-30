@@ -41,16 +41,6 @@ setup(
         'urllib3',
         'docker==2.0.2',
         'pytest',
-        'docker-py>=1.7.1',
-        'ryu>=4',
-        'networkx>=1.10',
-        'spyne==2.12.11',
-        'suds>=0.4',
-        'lxml>=2.3',
-        'debtcollector>=1.2.0',
-        'stevedore>=1.10.0',
-        'greenlet>=0.3',
-        'humanize'
     ],
     scripts=scripts,
 )
