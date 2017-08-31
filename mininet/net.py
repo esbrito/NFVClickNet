@@ -106,6 +106,7 @@ from mininet.util import ( quietRun, fixLimits, numCores, ensureRoot,
                            macColonHex, ipStr, ipParse, netParse, ipAdd,
                            waitListening )
 from mininet.term import cleanUpScreens, makeTerms
+#from main import load_sfcs
 
 # Mininet version: should be consistent with README and LICENSE
 VERSION = "2.3.0d1"
@@ -980,6 +981,35 @@ class Containernet( Mininet ):
         # call original Mininet.__init__
         Mininet.__init__(self, **params)
 
+
+    def addPop( self, name, cls=Docker, **params ):
+        """
+        Wrapper for addHost method that adds a
+        Docker container as a host.
+        """
+        return self.addHost( name, cls=cls, **params)
+
+    def removePop( self, name, **params):
+        """
+        Wrapper for removeHost. Just to be complete.
+        """
+        return self.removeHost(name, **params)
+
+    def addPopLink( self, node1, node2, port1=None, port2=None, cls=None, **params ):
+        """
+        Makes two interfaces connecting to switch
+        """
+        self.addLink( node1, node2, port1=None, port2=None, cls=None, **params )
+        return self.addLink( node1, node2, port1=None, port2=None, cls=None, **params )
+
+    def removePopLink( self, link=None, node1=None, node2=None):
+        """
+        Deletes two interfaces connecting to switch
+        """
+        self.removeLink( link=None, node1=None, node2=None )
+        return self.removeLink( link=None, node1=None, node2=None )
+
+
     def addDocker( self, name, cls=Docker, **params ):
         """
         Wrapper for addHost method that adds a
@@ -993,6 +1023,10 @@ class Containernet( Mininet ):
         """
         return self.removeHost(name, **params)
 
+    def sfc( self, name ):
+        #load_sfcs()
+        print('SFC')
+        
 
 class MininetWithControlNet( Mininet ):
 

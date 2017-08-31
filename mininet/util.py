@@ -280,6 +280,31 @@ def dumpPorts( switches ):
             output( '%s:%d ' % ( intf, port ) )
         output( '\n' )
 
+
+def dumpNodeConnections2( nodes ):
+    "Dump connections to/from nodes."
+
+    def dumpConnections2( node ):
+        "Helper function: dump connections to node"
+        _output = ""
+        for intf in node.intfList():
+            _output += ' %s:' % intf 
+            if intf.link:
+                intfs = [ intf.link.intf1, intf.link.intf2 ]
+                intfs.remove( intf )
+                _output += str(intfs[ 0 ])
+            else:
+                _output += ' ' 
+        return _output
+
+    routput = ""
+    for node in nodes:
+        routput += node.name 
+        routput += dumpConnections2( node )
+        routput += '\n' 
+    return routput
+
+
 # IP and Mac address formatting and parsing
 
 def _colonHex( val, bytecount ):

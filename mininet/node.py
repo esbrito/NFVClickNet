@@ -642,6 +642,7 @@ class Host( Node ):
     pass
 
 
+
 class Docker ( Host ):
     """Node that represents a docker container.
     This part is inspired by:
@@ -1048,6 +1049,57 @@ class Docker ( Host ):
         except:
             error("Problem reading cgroup info: %r\n" % cmd)
             return -1
+
+
+    def deployFunction( self, nf_type, pop):
+        """
+        Deploy into container the function
+        """
+        print ("Deploying function '%s'..." % nf_type )
+        try:
+            path = os.getcwd()+"/mininet/nf_files/"
+            _file = open(path + nf_type + ".tar")
+            return self.dcli.put_archive(container="mn.%s" % (pop), path="/root/",
+                               data=_file)
+
+        except IOError:
+            error( "Function file '%s' does not exist in nf_files folder\n" % nf_type )
+            return False
+
+    def enableFunction( self, nf_type, pop):
+        """
+        Enable function using Click Software
+        """
+        try:
+            print ("Enabling function '%s'..." % nf_type )
+            process = self.dcli.exec_create(container="mn.%s" % (pop),
+                                      cmd="sudo ./Click -j4 " + nf_type + ".click "
+                                          "DEV=%s" % (pop))
+            if self.dcli.exec_start(process, detach=True) == '':
+                return True
+            else:
+                error( "Error! Function not deployed yet!\n" )
+                return False
+        except RuntimeError:
+            error( "Error executing Click\n" )
+            return False
+
+    def disableFunction( self, nf_type, pop):
+        """
+        Disable function using Click Software
+        """
+        try:
+            print ("Disabling function '%s'..." % nf_type )
+            process = self.dcli.exec_create(container="mn.%s" % (pop),
+                                      cmd="ps -eaf | grep " + nf_type + " | grep -v grep | awk '{print $2}' | sudo xargs kill -9")
+            if self.dcli.exec_start(process, detach=True) == '':
+                return True
+            else:
+                error( "Error! Function not deployed yet!\n" )
+                return False
+        except RuntimeError:
+            error( "Error executing Click\n" )
+            return False
 
 
 class CPULimitedHost( Host ):

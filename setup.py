@@ -40,7 +40,7 @@ setup(
         'setuptools',
         'urllib3',
         'docker==2.0.2',
-        'pytest'
+        'pytest',
     ],
     scripts=scripts,
 )

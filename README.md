@@ -1,87 +1,82 @@
-Containernet
+NFVClickNet
 ============
 
-[![Join the chat at https://gitter.im/mpeuster/containernet](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mpeuster/containernet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/containernet/containernet.svg?branch=master)](https://travis-ci.org/containernet/containernet)
 
-### Containernet: Mininet fork that allows to use Docker containers as hosts in emulated networks
+### NFVClickNet: Containernet fork that allows to deploy and enable Virtual Network Functions in Docker containers as PoPs in the infrastructure
 
-This fork of Mininet allows to use Docker containers as Mininet hosts. This enables interesting functionalities to built networking/cloud testbeds. The integration is done by subclassing the original Host class.
-
-Based on: Mininet 2.2.1
 
 * Mininet:  http://mininet.org
 * Original Mininet repository: https://github.com/mininet/mininet
+* Containernet: https://github.com/containernet/containernet
+  References:
+  * Manuel Peuster, Holger Karl, and Steven van Rossem. "**MeDICINE: Rapid Prototyping of Production-Ready Network Services in Multi-PoP Environments.**" to appear in IEEE Conference on Network Function Virtualization and Software Defined Network (NFV-SDN), 2016.
+    * Pre-print online: http://arxiv.org/abs/1606.05995
+* Click Router: https://github.com/kohler/click
 
-### Cite this work
+### Requirements
+```apt-get install libxml2-dev libxslt1-dev ```
+```export LC_ALL=C  ```
+```pip  install -r requirements.txt  ```
 
-If you use Containernet for your research and/or other publications, please cite the following paper to reference our work:
 
-* Manuel Peuster, Holger Karl, and Steven van Rossem. "**MeDICINE: Rapid Prototyping of Production-Ready Network Services in Multi-PoP Environments.**" to appear in IEEE Conference on Network Function Virtualization and Software Defined Network (NFV-SDN), 2016.
-  * Pre-print online: http://arxiv.org/abs/1606.05995
+### What new Features it offers?
 
-### NFV multi-PoP Extension
+* You can create PoPs
+* Deploy any VNF into the PoP (a Docker Container running Click Router)
+* Run any function that can be created using Click (See here: http://read.cs.ucla.edu/click/elements)
+* Supported functions are, and not limited to:
+  * Load Balancer
+  * Firewall
+  * NAT
+  * DPI
+  * Traffic Shaper
+  * Tunnel
+  * Multicast
+  * BRAS
+  * Monitoring
+  * DDoS prevention
+  * IDS
+  * IPS
+  * Congestion Control
+* Included Firewall and Traffic Shaper already implemented
 
-There is an extension of Containernet called MeDICINE which is a full-featured multi-PoP emulation platform for NFV scenarios which is developed as part of the SONATA project.
-
-* MeDICINE platform repository: https://github.com/sonata-nfv/son-emu
-* SONATA project: http://www.sonata-nfv.eu
-
-### Features
-
-* Add, remove Docker containers to Mininet topologies
-* Connect Docker containers to topology (to switches, other containers, or legacy Mininet hosts )
-* Execute commands inside Docker containers by using the Mininet CLI 
-* Dynamic topology changes (lets behave like a small cloud ;-) )
- * Add Hosts/Docker containers to a *running* Mininet topology
- * Connect Hosts/Docker containers to a *running* Mininet topology
- * Remove Hosts/Docker containers/Links from a *running* Mininet topology
-* Resource limitation of Docker containers
- * CPU limitation with Docker CPU share option
- * CPU limitation with Docker CFS period/quota options
- * Memory/swap limitation
- * Change CPU/mem limitations at runtime!
-* Traffic control links (delay, bw, loss, jitter)
- * (missing: TCLink support for dynamically added containers/hosts)
-* Automated unit tests for all new features
-* Automated installation based on Ansible playbook
 
 ### Installation
-Automatic installation is provided through an Ansible playbook.
-* Requires: Ubuntu **16.04 LTS**
-* `sudo apt-get update`
-* `sudo apt-get upgrade`
-* `sudo apt-get install ansible git aptitude`
-* `sudo vim /etc/ansible/hosts`
-* Add: `localhost ansible_connection=local`
-* `git clone https://github.com/containernet/containernet.git`
-* `cd containernet/ansible`
-* `sudo ansible-playbook install.yml`
-* Wait (and have a coffee) ...
+* Go to the root folder of the project
+* Run the following command
+* `sudo make install`
+
 
 ### Usage / Run
-Start example topology with some empty Docker containers connected to the network.
+Start example topology
 
-* `cd containernet`
-* run: `sudo python examples/dockerhosts.py`
-* use: `containernet> d1 ifconfig` to see config of container d1
+* run: `sudo python examples/pophosts.py`
+* use: `NFVClickNet> deploy d1 firewall` to deploy firewall in the PoP
+* use: `NFVClickNet> enable d1 firewall` to enable the firewall
+* use: `NFVClickNet> disable d1 firewall` to disable the firewall
 
-### Tests
-There is a set of Containernet specific unit tests located in `mininet/test/test_containernet.py`. To run these, do:
+### Cleaning Containers and Mininet
+You can run the following command to clean the processes running:
+* run: `./util/clean.sh `
 
-* `sudo py.test -v mininet/test/test_containernet.py`
 
-### Vagrant support
+### How to create/use a new Virtual Network Function
+To create a new VNF, you need to create a `.click` file, which you specify there the processing and analysis you want to do in the packets.
 
-Using the provided Vagrantfile is the most simple way to run and test Containernet:
+Look here if you want to learn more about Click: http://read.cs.ucla.edu/click/learning. It is easy and simple to learn and create functions with it!
 
-```
-git clone https://github.com/containernet/containernet.git
-cd containernet
-vagrant up
-vagrant ssh
-```
+With the `.click` file created, you need to compress it to a tar file. **Put the name of the `.click` file and the `.tar` with the name of the function you will use in the command line to deploy and enable it.**
+
+After creating the `.tar`, put it in mininet/nf_files folder.
+
+Now you can deploy and enable you function!
+
+If you want to see some examples, you can decompress the .tar files in the nf_file folder to look how they were implemented.
+
+### Important Note
+When defining a topology as pophost.py, for example, you **NEED** to set the Docker Image with an image that contains Click Software, so it can run click functions.
+
+Fortunately, we already provide a docker image *dimage="gmiotto/click"* so you can use it in your topologies.
 
 ### Contact
-Manuel Peuster
-manuel (dot) peuster (at) upb (dot) de
-
+Email: eduardo.brito@inf.ufrgs.br, paschoal@inf.ufrgs.br, gustavomiotto@gmail.com

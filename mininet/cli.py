@@ -43,7 +43,7 @@ from mininet.util import ( quietRun, dumpNodeConnections,
 class CLI( Cmd ):
     "Simple command-line interface to talk to nodes."
 
-    prompt = 'containernet> '
+    prompt = 'NFVClickNet> '
 
     def __init__( self, mininet, stdin=sys.stdin, script=None ):
         """Start and run interactive or batch mode CLI
@@ -125,19 +125,19 @@ class CLI( Cmd ):
         'You may also send a command to a node using:\n'
         '  <node> command {args}\n'
         'For example:\n'
-        '  mininet> h1 ifconfig\n'
+        '  NFVClickNet> h1 ifconfig\n'
         '\n'
         'The interpreter automatically substitutes IP addresses\n'
         'for node names when a node is the first arg, so commands\n'
         'like\n'
-        '  mininet> h2 ping h3\n'
+        '  NFVClickNet> h2 ping h3\n'
         'should work.\n'
         '\n'
         'Some character-oriented interactive commands require\n'
         'noecho:\n'
-        '  mininet> noecho h2 vi foo.py\n'
+        '  NFVClickNet> noecho h2 vi foo.py\n'
         'However, starting up an xterm/gterm is generally better:\n'
-        '  mininet> xterm h2\n\n'
+        '  NFVClickNet> xterm h2\n\n'
     )
 
     def do_help( self, line ):
@@ -145,6 +145,76 @@ class CLI( Cmd ):
         Cmd.do_help( self, line )
         if line is '':
             output( self.helpStr )
+
+    def do_deploy( self, line ):
+        """Deploy Virtual Network Function in the selected Node.
+         Usage: deploy node function
+         Available Functions: 'forwarder', 'firewall' and 'traffic shapper'"""
+        args = line.split()
+        if not args:
+            error( 'usage: deploy node function ...\n')
+        elif len(args) != 2:
+            error( 'Wrong number of arguments. Usage: deploy node function ...\n')
+        else:
+            if args[0] not in self.mn:
+                error( "node '%s' not in network\n" % args[0] )
+            else:
+                container = self.mn[ args[0] ]
+                if container.deployFunction( args[1].lower(), container ):
+                    output( "Function deployed with success!\n" )
+                else:
+                    error( "Fail to deploy function!\n" )
+
+    def do_enable( self, line ):
+        """Runs Virtual Network Function in the selected Node.
+         Usage: enable node function
+         Available Functions: 'forwarder', 'firewall' and 'traffic shapper'"""
+        args = line.split()
+        if not args:
+            error( 'usage: enable node function ...\n')
+        elif len(args) != 2:
+            error( 'Wrong number of arguments. Usage: enable node function ...\n')
+        else:
+            if args[0] not in self.mn:
+                error( "node '%s' not in network\n" % args[0] )
+            else:
+                container = self.mn[ args[0] ]
+                if container.enableFunction( args[1].lower(), container ):
+                    output( "Enabled\n" )
+                else:
+                    error( "Fail to enable function!\n")
+
+
+    def do_disable( self, line ):
+        """Runs Virtual Network Function in the selected Node.
+         Usage: disable node function
+         Available Functions: 'forwarder', 'firewall' and 'traffic shapper'"""
+        args = line.split()
+        if not args:
+            error( 'usage: disable node function ...\n')
+        elif len(args) != 2:
+            error( 'Wrong number of arguments. Usage: disable node function ...\n')
+        else:
+            if args[0] not in self.mn:
+                error( "node '%s' not in network\n" % args[0] )
+            else:
+                container = self.mn[ args[0] ]
+                if container.disableFunction( args[1].lower(), container ):
+                    output( "Disabled" )
+                else:
+                    error( "Fail to disable function!" )
+
+    def do_sfc( self, line ):
+        """Creates rules and deploy VNFs based on SFC description.
+        Usage: sfc name"""
+        args = line.split()
+        if not args:
+            error( 'usage: disable node function ...\n')
+        elif len(args) != 1:
+            error( 'Wrong number of arguments. Usage: sfc name ...\n')
+        else:
+            self.mn.sfc(args[0])
+
 
     def do_nodes( self, _line ):
         "List all nodes."
