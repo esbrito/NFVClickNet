@@ -161,9 +161,9 @@ class CLI( Cmd ):
             else:
                 container = self.mn[ args[0] ]
                 if container.deployFunction( args[1].lower(), container ):
-                    output( "Function deployed with success!" )
+                    output( "Function deployed with success!\n" )
                 else:
-                    error( "Fail to deploy function!" )
+                    error( "Fail to deploy function!\n" )
 
     def do_enable( self, line ):
         """Runs Virtual Network Function in the selected Node.
@@ -180,9 +180,9 @@ class CLI( Cmd ):
             else:
                 container = self.mn[ args[0] ]
                 if container.enableFunction( args[1].lower(), container ):
-                    output( "Enabled" )
+                    output( "Enabled\n" )
                 else:
-                    error( "Fail to enable function!")
+                    error( "Fail to enable function!\n")
 
 
     def do_disable( self, line ):
